@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartEdu.Backend.Data;
 using SmartEdu.Backend.Models;
+using SmartEdu.Shared.DTO;
 
 
 namespace SmartEdu.Backend.Controllers
@@ -32,10 +33,18 @@ namespace SmartEdu.Backend.Controllers
             return Ok(trainer);
         }
         [HttpPost]
-        public async Task<IActionResult> AddTrainer(Trainer trainer)
+        public async Task<IActionResult> AddTrainer(AddTrainerDTO dto)
         {
-            var newTrainer = await _trainer.AddTrainer(trainer);
-            return CreatedAtAction(nameof(GetTrainerById), new { id = newTrainer.IdTrainer }, newTrainer);
+            var newTrainer = new Trainer
+            {
+                Name = dto.Name,
+                Email = dto.Email,
+                Phone = dto.Phone
+            };
+            
+            var createdTrainer = await _trainer.AddTrainer(newTrainer);
+            return CreatedAtAction(nameof(GetTrainerById),
+                new { id = createdTrainer.IdTrainer }, createdTrainer);
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTrainer(int id, Trainer trainer)
