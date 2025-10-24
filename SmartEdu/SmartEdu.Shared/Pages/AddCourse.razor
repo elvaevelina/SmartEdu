@@ -1,0 +1,82 @@
+﻿@page "/addcourse"
+@using System.Net.Http.Json
+@using SmartEdu.Shared.Models
+@using SmartEdu.Shared.DTO
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<div class="hero-section">
+    <h1 class="system-title">SmartEdu</h1>
+    <p class="system-subtitle">Hybrid Learning Management System for Modern Education</p>
+</div>
+
+<div class="form-card">
+    <h2 class="form-title">Add New Course</h2>
+
+    <EditForm Model="@newCourse">
+        <div class="form-group">
+            <label>Course Title</label>
+            <input type="text" class="form-input" placeholder="Enter Course Title" @bind="newCourse.Title" />
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-input" placeholder="Enter course description" @bind="newCourse.Description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Duration (Hours)</label>
+            <input type="number" class="form-input" placeholder="e.g. 12" @bind="newCourse.DurationInHours" />
+        </div>
+
+        <div class="form-group">
+            <label>Trainer ID</label>
+            <input type="number" class="form-input" placeholder="Enter trainer ID" @bind="newCourse.TrainerId" />
+        </div>
+
+        <button class="submit-btn" @onclick="SaveCourse" disabled="@isSubmitting">
+            @(isSubmitting ? "Submitting..." : "Submit")
+        </button>
+
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <p class="form-message">@message</p>
+        }
+    </EditForm>
+
+</div>
+
+
+@code {
+    private AddCourseDTO newCourse = new();
+    private bool isSubmitting = false;
+    private string? message;
+
+    private async Task SaveCourse()
+    {
+        isSubmitting = true;
+        message = string.Empty;
+        try
+        {
+            var response = await Http.PostAsJsonAsync("https://localhost:7194/api/courses", newCourse);
+            if (response.IsSuccessStatusCode)
+            {
+                message = "Course successfully added!";
+                newCourse = new AddCourseDTO();
+                Nav.NavigateTo("/");
+            }
+            else
+            {
+                message = $"Error: {response.ReasonPhrase}";
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}

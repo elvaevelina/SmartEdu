@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartEdu.Backend.Data;
 using SmartEdu.Backend.Models;
-
+using SmartEdu.Shared.DTO;
 namespace SmartEdu.Backend.Controllers
 {
     [Route("api/[controller]")]
@@ -34,10 +34,19 @@ namespace SmartEdu.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCourse(Course course)
+        public async Task<IActionResult> AddCourse(AddCourseDTO dto)
         {
-            var newCourse = await _course.AddCourse(course);
-            return CreatedAtAction(nameof(GetCourseById), new { id = newCourse.IdCourse }, newCourse);
+            var newCourse = new Course
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                DurationInHours = dto.DurationInHours,
+                TrainerId = dto.TrainerId
+                };
+            var createdCourse = await _course.AddCourse(newCourse);
+            return CreatedAtAction(nameof(GetCourseById),
+                new { id = createdCourse.IdCourse }, createdCourse);
+            
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, Course course)

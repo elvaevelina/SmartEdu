@@ -109,6 +109,43 @@
     font-style: italic;
 }
 
+
+/* === Add Course Button (NavLink Style) === */
+.add-course-container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 0 40px 20px;
+}
+
+.add-course-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    text-decoration: none; 
+    background-color: #E8E8E8;
+    color: #145374;
+    border: 1.5px solid #B6BBC4;
+    border-radius: 25px;
+    padding: 2px 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(182, 187, 196, 0.4);
+}
+
+    .add-course-btn:hover {
+        background-color: #F0ECE5;
+        box-shadow: 0 2px 8px rgba(49, 48, 77, 0.2);
+    }
+
+.plus-icon {
+    font-size: 1.1rem;
+    font-weight: bold;
+    position: relative;
+    top: -1px; 
+}
+
+
 /* === Card Grid === */
 .card-grid {
     display: grid;
@@ -125,14 +162,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.3s ease-in-out;
     color: #E8E8E8;
 }
-
-    .course-card:hover {
-        transform: translateY(-5px);
-/*        box-shadow: 0 8px 20px rgba(49, 48, 77, 0.4);*/
-    }
 
 .course-card-header {
     display: flex;
@@ -180,20 +211,13 @@
 .trainer-card {
     background: #5588A3;
     border-radius: 12px;
-    /*    box-shadow: 0 4px 10px rgba(49, 48, 77, 0.2);*/
     padding: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     color: #00334E;
 }
-
-    .trainer-card:hover {
-        transform: translateY(-4px);
-/*        box-shadow: 0 8px 16px rgba(49, 48, 77, 0.3);*/
-    }
 
 .trainer-avatar {
     font-size: 2rem;
@@ -221,6 +245,59 @@
 .trainer-phone {
     font-weight: 600;
     color: #E8E8E8;
+}
+
+/* === Add Course Form === */
+.form-card {
+    max-width: 1200px;
+    margin: 60px auto;
+    background: #5588A3;
+    border-radius: 20px;
+    padding: 40px 50px;
+    position: relative;
+}
+
+.form-title {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 35px;
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        color: #ffffff;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+.form-input {
+    border: 1.5px solid #B6BBC4;
+    border-radius: 25px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    background-color: #efefef;
+    color: #00334E;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #145374;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 

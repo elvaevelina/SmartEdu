@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartEdu.Backend.Data;
 using SmartEdu.Backend.Models;
 
+
 namespace SmartEdu.Backend.Controllers
 {
     [Route("api/[controller]")]

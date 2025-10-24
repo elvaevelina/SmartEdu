@@ -16,6 +16,13 @@
 <div class="content-section">
     <h2 class="section-title">Published Courses</h2>
 
+    <div class="add-course-container">
+        <NavLink class="add-course-btn" href="addcourse">
+            <span class="plus-icon">+</span> Add Course
+        </NavLink>
+    </div>
+
+
     @if (Courses == null)
     {
         <p class="loading-text">Loading courses...</p>
@@ -38,7 +45,7 @@
                         <p>@course.Description</p>
                     </div>
                     <div class="course-card-footer">
-                        <span class="duration">@course.DurationInHours jam</span>
+                        <span class="duration">@course.DurationInHours Hours</span>
                     </div>
                 </div>
             }
