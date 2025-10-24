@@ -1,0 +1,73 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SmartEdu.Backend.Data;
+using SmartEdu.Backend.Models;
+
+namespace SmartEdu.Backend.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TrainersController : ControllerBase
+    {
+        private readonly ITrainer _trainer;
+        public TrainersController(ITrainer trainer)
+        {
+            _trainer = trainer;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetTrainers()
+        {
+            var trainers = await _trainer.GetTrainers();
+            return Ok(trainers);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTrainerById(int id)
+        {
+            var trainer = await _trainer.GetTrainerById(id);
+            if (trainer == null)
+            {
+                return NotFound();
+            }
+            return Ok(trainer);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddTrainer(Trainer trainer)
+        {
+            var newTrainer = await _trainer.AddTrainer(trainer);
+            return CreatedAtAction(nameof(GetTrainerById), new { id = newTrainer.IdTrainer }, newTrainer);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTrainer(int id, Trainer trainer)
+        {
+            if (id != trainer.IdTrainer)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var updatedTrainer = await _trainer.UpdateTrainer(trainer);
+                return Ok(updatedTrainer);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTrainer(int id)
+        {
+            var deleted = await _trainer.DeleteTrainer(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchTrainers([FromQuery] string keyword)
+        {
+            var trainers = await _trainer.SearchTrainers(keyword);
+            return Ok(trainers);
+        }
+    }
+}
