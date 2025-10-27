@@ -9,6 +9,7 @@ namespace SmartEdu.Backend.Data
         Task<Trainer> AddTrainer(Trainer trainer);
         Task<Trainer?> UpdateTrainer(Trainer trainer);
         Task<bool> DeleteTrainer(int id);
+        Task<Trainer> GetTrainerWithCourses(int id);
         Task<IEnumerable<Trainer>> SearchTrainers(string keyword);
 
     }

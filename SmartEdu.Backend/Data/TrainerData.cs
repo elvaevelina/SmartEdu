@@ -66,5 +66,11 @@ namespace SmartEdu.Backend.Data
             }
             return await _context.Trainers.Where(t => t.Name.Contains(keyword) || t.Email.Contains(keyword)).ToListAsync();
         }
+
+        public Task<Trainer> GetTrainerWithCourses(int id)
+        {
+            return _context.Trainers.Include(t => t.Courses)
+                                    .FirstOrDefaultAsync(t => t.IdTrainer == id)!;
+        }
     }
 }

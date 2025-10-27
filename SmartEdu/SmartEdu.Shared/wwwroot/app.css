@@ -444,6 +444,120 @@
     transition: 0.3s ease;
 }
 
+/* Trainer Detail Page */
+.trainer-detail-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #333;
+}
+
+.trainer-detail-container {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.trainer-card-detail {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.trainer-avatar-detail {
+    font-size: 4rem;
+    background-color: #f4f6ff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trainer-info-detail h3 {
+    font-size: 1.6rem;
+    margin: 0;
+    color: #2a2a2a;
+}
+
+.trainer-info-detail p {
+    margin: 4px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.trainer-courses-section h3 {
+    font-size: 1.4rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background-color: #f8f9fc;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-icon {
+    font-size: 2rem;
+}
+
+.course-info h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #222;
+}
+
+.course-info p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.duration {
+    font-size: 0.9rem;
+    color: #777;
+    font-style: italic;
+}
+
+.no-courses {
+    color: #777;
+    font-style: italic;
+}
+
+.back-btn {
+    display: block;
+    margin: 25px auto 0;
+    background-color: #4a6cf7;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+
 
 /*html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

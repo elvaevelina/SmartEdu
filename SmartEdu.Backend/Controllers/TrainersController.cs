@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SmartEdu.Backend.Data;
 using SmartEdu.Backend.Models;
 using SmartEdu.Shared.DTO;
@@ -25,11 +26,9 @@ namespace SmartEdu.Backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTrainerById(int id)
         {
-            var trainer = await _trainer.GetTrainerById(id);
+            var trainer = await _trainer.GetTrainerWithCourses(id);
             if (trainer == null)
-            {
                 return NotFound();
-            }
             return Ok(trainer);
         }
         [HttpPost]
