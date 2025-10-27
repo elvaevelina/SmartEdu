@@ -13,7 +13,7 @@
 <div class="form-card">
     <h2 class="form-title">Add New Trainer</h2>
 
-    <EditForm Model="@newTrainer">
+    <EditForm Model="@newTrainer" FormName="AddTrainerForm">
         <div class="form-group">
             <label>Full Name</label>
             <input type="text" class="form-input" placeholder="Enter Full Name" @bind="newTrainer.Name" />

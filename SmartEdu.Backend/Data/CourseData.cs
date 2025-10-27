@@ -72,8 +72,7 @@ namespace SmartEdu.Backend.Data
 
             return await _context.Courses
                 .Include(c => c.Trainer)
-                .Where(c => c.Title.Contains(keyword) || c.Description.Contains(keyword))
-                .ToListAsync();
+                .Where(c => c.Title.Contains(keyword)).ToListAsync();
         }
 
     }

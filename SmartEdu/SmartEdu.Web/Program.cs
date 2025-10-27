@@ -1,6 +1,7 @@
 using SmartEdu.Shared.Services;
 using SmartEdu.Web.Components;
 using SmartEdu.Web.Services;
+using Microsoft.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,12 @@ builder.Services.AddRazorComponents()
 
 // Add device-specific services used by the SmartEdu.Shared project
 builder.Services.AddSingleton<IFormFactor, FormFactor>();
+
+builder.Services.AddScoped<HttpClient>(sp =>
+{
+    var nav = sp.GetRequiredService<NavigationManager>();
+    return new HttpClient { BaseAddress = new Uri(nav.BaseUri) };
+});
 
 var app = builder.Build();
 

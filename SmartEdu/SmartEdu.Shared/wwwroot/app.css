@@ -207,6 +207,29 @@
     color: #B6BBC4;
 }
 
+/* === Button Edit & Delete === */
+.btn-edit,
+.btn-delete {
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-right: 6px;
+    font-size:0.85rem;
+}
+
+.btn-edit {
+    background-color: #f5c518;
+}
+
+.btn-delete {
+    background-color: #e63946; /* merah */
+}
+
+
 /* === Trainer Section === */
 .trainer-card {
     background: #5588A3;
@@ -216,6 +239,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
+    min-height: 180px;
     color: #00334E;
 }
 
@@ -282,7 +306,20 @@
     color: #E8E8E8;
 }
 
-/* === Add Course Form === */
+.trainer-card {
+    position: relative; 
+}
+
+.trainer-action {
+    position: absolute;
+    bottom: 16px;
+    right: 14px;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+/* === Add Course & Trainer Form === */
 .form-card {
     max-width: 1200px;
     margin: 60px auto;
@@ -333,6 +370,78 @@
     font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
+}
+
+/* === Update Course Form === */
+.update-card {
+    max-width: 1200px;
+    margin: 60px auto;
+    background: #5588A3;
+    border-radius: 20px;
+    padding: 40px 50px;
+    position: relative;
+}
+
+.update-title {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 35px;
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        color: #ffffff;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+.form-control {
+    border: 1.5px solid #B6BBC4;
+    border-radius: 25px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    background-color: #efefef;
+    color: #00334E;
+}
+
+/* === Buttons === */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn-primary {
+    background-color: #145374;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-cancel {
+    background-color: #b6bbc4;
+    color: #00334E;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
 }
 
 

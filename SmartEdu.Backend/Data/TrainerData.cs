@@ -14,10 +14,10 @@ namespace SmartEdu.Backend.Data
 
         public async Task<IEnumerable<Trainer>> GetTrainers()
         {
-            //return await _context.Trainers.Include(t=>t.Courses)
-            //                              .OrderByDescending(t=>t.IdTrainer)
-            //                              .ToListAsync();
-            return await _context.Trainers.ToListAsync();
+            return await _context.Trainers.Include(t => t.Courses)
+                                          .OrderByDescending(t => t.IdTrainer)
+                                          .ToListAsync();
+            //return await _context.Trainers.ToListAsync();
         }
 
         public async Task<Trainer?>GetTrainerById(int id)

@@ -1,0 +1,73 @@
+﻿@page "/updatetrainer/{id:int}"
+@inject HttpClient Http
+@using SmartEdu.Shared.DTO
+@using SmartEdu.Shared.Models
+@inject NavigationManager Nav
+
+<div class="hero-section">
+    <h1 class="system-title">SmartEdu</h1>
+    <p class="system-subtitle">Hybrid Learning Management System for Modern Education</p>
+</div>
+
+@if (trainer == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+      <div class="form-card">
+        <h2 class="form-title">Edit Trainer</h2>
+        <EditForm Model="trainer" OnValidSubmit="HandleUpdate">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label>Name</label>
+                <InputText @bind-Value="trainer.Name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <InputText @bind-Value="trainer.Email" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <InputText @bind-Value="trainer.Phone" class="form-control" />
+            </div>
+            <button type="submit" class="btn-primary">Update</button>
+            <button type="button" class="btn-cancel" @onclick="BackToHome">Cancel</button>
+
+            </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Trainer? trainer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        trainer = await Http.GetFromJsonAsync<Trainer>($"api/Trainers/{id}");
+    }
+
+    private async Task HandleUpdate()
+    {
+        if (trainer != null)
+        {
+            var response = await Http.PutAsJsonAsync($"api/Trainers/{id}", trainer);
+            if (response.IsSuccessStatusCode)
+            {
+                Nav.NavigateTo("/");
+            }
+            else
+            {
+                // Handle error (e.g., show a message to the user)
+            }
+        }
+    }
+    private void BackToHome()
+    {
+        Nav.NavigateTo("/");
+    }
+}

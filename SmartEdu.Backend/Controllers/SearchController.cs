@@ -26,8 +26,7 @@ namespace SmartEdu.Backend.Controllers
             var normalizedQuery = query.ToLower();
 
             var courses = _context.Courses
-                .Where(c => c.Title.ToLower().Contains(normalizedQuery) ||
-                            c.Description.ToLower().Contains(normalizedQuery))
+                .Where(c => c.Title.ToLower().Contains(normalizedQuery))
                 .ToList();
 
             var trainers = _context.Trainers

@@ -1,0 +1,75 @@
+﻿@page "/updatecourse/{id:int}"
+@inject HttpClient Http
+@using SmartEdu.Shared.DTO
+@using SmartEdu.Shared.Models
+@inject NavigationManager Nav
+
+<div class="hero-section">
+    <h1 class="system-title">SmartEdu</h1>
+    <p class="system-subtitle">Hybrid Learning Management System for Modern Education</p>
+</div>
+
+@if (course == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="form-card">
+        <h2 class="form-title">Edit Course</h2>
+        <EditForm Model="course" OnValidSubmit="HandleUpdate">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label>Title</label>
+                <InputText @bind-Value="course.Title" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <InputTextArea @bind-Value="course.Description" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Duration (hours)</label>
+                <InputNumber @bind-Value="course.DurationInHours" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Trainer ID</label>
+                <InputNumber @bind-Value="course.TrainerId" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn-primary">Update</button>
+            <button type="button" class="btn-cancel" @onclick="BackToHome">Cancel</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private Course? course;
+
+    protected override async Task OnInitializedAsync()
+    {
+        course = await Http.GetFromJsonAsync<Course>($"api/Courses/{id}");
+    }
+
+    private async Task HandleUpdate()
+    {
+        var response = await Http.PutAsJsonAsync($"api/Courses/{id}", course);
+        if (response.IsSuccessStatusCode)
+        {
+            Nav.NavigateTo("/");
+        }
+        else
+        {
+            Console.WriteLine("Update failed");
+        }
+    }
+
+    private void BackToHome() => Nav.NavigateTo("/");
+}

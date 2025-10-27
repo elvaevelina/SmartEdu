@@ -47,21 +47,19 @@ namespace SmartEdu.Backend.Controllers
                 new { id = createdTrainer.IdTrainer }, createdTrainer);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTrainer(int id, Trainer trainer)
+        public async Task<IActionResult> UpdateTrainer(int id, [FromBody] AddTrainerDTO dto)
         {
-            if (id != trainer.IdTrainer)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                var updatedTrainer = await _trainer.UpdateTrainer(trainer);
-                return Ok(updatedTrainer);
-            }
-            catch (KeyNotFoundException)
+            var trainer = await _trainer.GetTrainerById(id);
+            if (trainer == null)
             {
                 return NotFound();
             }
+            trainer.Name = dto.Name;
+            trainer.Email = dto.Email;
+            trainer.Phone = dto.Phone;
+
+            await _trainer.UpdateTrainer(trainer);
+            return NoContent();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrainer(int id)

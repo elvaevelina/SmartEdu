@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartEdu.Backend.Data;
 using SmartEdu.Backend.Models;
 using SmartEdu.Shared.DTO;
+using SQLitePCL;
 namespace SmartEdu.Backend.Controllers
 {
     [Route("api/[controller]")]
@@ -49,21 +50,20 @@ namespace SmartEdu.Backend.Controllers
             
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, Course course)
+        public async Task<IActionResult> UpdateCourse(int id, [FromBody] AddCourseDTO dto)
         {
-            if (id != course.IdCourse)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                var updatedCourse = await _course.UpdateCourse(course);
-                return Ok(updatedCourse);
-            }
-            catch (KeyNotFoundException)
+            var course = await _course.GetCourseById(id);
+            if(course == null)
             {
                 return NotFound();
             }
+            course.Title = dto.Title;
+            course.Description = dto.Description;
+            course.DurationInHours = dto.DurationInHours;
+            course.TrainerId = dto.TrainerId;
+            
+            await _course.UpdateCourse(course);
+            return NoContent();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
