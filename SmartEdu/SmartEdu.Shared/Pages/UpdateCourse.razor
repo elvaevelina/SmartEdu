@@ -40,6 +40,30 @@ else
                 <label>Trainer ID</label>
                 <InputNumber @bind-Value="course.TrainerId" class="form-control" />
             </div>
+            <div class="form-group">
+                <label>Course Image</label>
+
+                <div class="course-image-container" style="margin-bottom: 10px; background-color: #f0f0f0; border-radius: 8px; overflow: hidden; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;">
+                    @if (!string.IsNullOrEmpty(course.ImageUrl))
+                    {
+                        <img src="@($"{ApiBaseUrl}/Uploads/{course.ImageUrl}")"
+                             alt="Preview"
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             @onerror="e => course.ImageUrl = null" />
+                    }
+                    else
+                    {
+                        <span style="color: #999; font-style: italic;">No Image</span>
+                    }
+                </div>
+
+                <InputFile OnChange="HandleFileSelected" class="form-input" />
+                @if (isUploading)
+                {
+                    <p style="color: blue; font-size: 0.9rem; margin-top: 5px;">Uploading image...</p>
+                }
+            </div>
+  
 
             <button type="submit" class="btn-primary">Update</button>
             <button type="button" class="btn-cancel" @onclick="BackToHome">Cancel</button>
@@ -52,23 +76,96 @@ else
     public int id { get; set; }
 
     private Course? course;
+    private bool isUploading = false;
+    private bool isSubmitting = false;
+    private string? message;
+
+    private string ApiBaseUrl = "https://localhost:7194";
+    private IBrowserFile? selectedFile;
+
+    private class UploadResult
+    {
+        public string FileName { get; set; }
+    }
 
     protected override async Task OnInitializedAsync()
     {
         course = await Http.GetFromJsonAsync<Course>($"api/Courses/{id}");
     }
 
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        isUploading = true;
+        message = string.Empty;
+        selectedFile = e.File;
+
+        if (selectedFile != null && course != null)
+        {
+            try
+            {
+                using var content = new MultipartFormDataContent();
+                using var fileStream = selectedFile.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+
+                content.Add(new StreamContent(fileStream), "file", selectedFile.Name);
+
+                var response = await Http.PostAsync($"{ApiBaseUrl}/api/File/upload", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<UploadResult>();
+                    if (result != null)
+                    {
+                        course.ImageUrl = result.FileName;
+                        message = "New image uploaded successfully!";
+                    }
+                }
+                else
+                {
+                    message = $"Error: Image upload failed. {response.ReasonPhrase}";
+                }
+            }
+            catch (Exception ex)
+            {
+                message = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                isUploading = false;
+            }
+        }
+    }
+
     private async Task HandleUpdate()
     {
-        var response = await Http.PutAsJsonAsync($"api/Courses/{id}", course);
-        if (response.IsSuccessStatusCode)
+        isSubmitting = true;
+        message = string.Empty;
+        if (isUploading)
         {
-            Nav.NavigateTo("/");
+            message = "Error: Please wait for the image upload to finish.";
+            isSubmitting = false;
+            return;
         }
-        else
+        try
         {
-            Console.WriteLine("Update failed");
+            var response = await Http.PutAsJsonAsync($"api/Courses/{id}", course);
+            if (response.IsSuccessStatusCode)
+            {
+                Nav.NavigateTo("/");
+            }
+            else
+            {
+                Console.WriteLine("Update failed");
+            }
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    
     }
 
     private void BackToHome() => Nav.NavigateTo("/");

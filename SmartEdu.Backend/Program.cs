@@ -71,7 +71,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
