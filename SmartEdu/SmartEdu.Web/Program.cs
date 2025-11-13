@@ -15,8 +15,9 @@ builder.Services.AddSingleton<IFormFactor, FormFactor>();
 
 builder.Services.AddScoped<HttpClient>(sp =>
 {
-    var nav = sp.GetRequiredService<NavigationManager>();
-    return new HttpClient { BaseAddress = new Uri(nav.BaseUri) };
+    //var nav = sp.GetRequiredService<NavigationManager>();
+    //return new HttpClient { BaseAddress = new Uri(nav.BaseUri) };
+    return new HttpClient { BaseAddress = new Uri("https://localhost:7194/") };
 });
 
 var app = builder.Build();

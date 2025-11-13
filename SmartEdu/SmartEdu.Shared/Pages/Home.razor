@@ -49,6 +49,21 @@
                     </div>
                     <div class="course-card-footer">
                         <span class="duration">@course.DurationInHours Hours</span>
+                        <div class="course-image-container">
+                            @if (!string.IsNullOrEmpty(course.ImageUrl))
+                            {
+                                <img src="@($"https://localhost:7194/Uploads/{course.ImageUrl}")"
+                                     alt="@course.Title"
+                                     class="course-image"
+                                     @onerror="e => { course.ImageUrl = null; }" />
+                            }
+                            else
+                            {
+                                <div class="no-image-placeholder">
+                                    <span>No Image</span>
+                                </div>
+                            }
+                        </div>
                         <div class="course-action">
                             <button class="btn-edit" @onclick="() => UpdateCourse(course.IdCourse)">✏️ Edit</button>
                             <button class="btn-delete" @onclick="() => DeleteCourse(course.IdCourse)">🗑️ Delete</button>

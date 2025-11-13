@@ -42,8 +42,9 @@ namespace SmartEdu.Backend.Controllers
                 Title = dto.Title,
                 Description = dto.Description,
                 DurationInHours = dto.DurationInHours,
-                TrainerId = dto.TrainerId
-                };
+                TrainerId = dto.TrainerId,
+                ImageUrl = dto.ImageUrl
+            };
             var createdCourse = await _course.AddCourse(newCourse);
             return CreatedAtAction(nameof(GetCourseById),
                 new { id = createdCourse.IdCourse }, createdCourse);
@@ -60,6 +61,7 @@ namespace SmartEdu.Backend.Controllers
             course.Title = dto.Title;
             course.Description = dto.Description;
             course.DurationInHours = dto.DurationInHours;
+            course.ImageUrl = dto.ImageUrl;
             course.TrainerId = dto.TrainerId;
             
             await _course.UpdateCourse(course);

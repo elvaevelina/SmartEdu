@@ -7,4 +7,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 // Add device-specific services used by the SmartEdu.Shared project
 builder.Services.AddSingleton<IFormFactor, FormFactor>();
 
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7194/") });
+
 await builder.Build().RunAsync();

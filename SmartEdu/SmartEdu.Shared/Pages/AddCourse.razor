@@ -4,6 +4,7 @@
 @using SmartEdu.Shared.DTO
 @inject HttpClient Http
 @inject NavigationManager Nav
+@using System.Net.Http.Headers
 
 <div class="hero-section">
     <h1 class="system-title">SmartEdu</h1>
@@ -33,6 +34,10 @@
             <label>Trainer ID</label>
             <input type="number" class="form-input" placeholder="Enter trainer ID" @bind="newCourse.TrainerId" />
         </div>
+        <div class="form-group">
+            <label>Image</label>
+            <InputFile OnChange="HandleFileSelected" class="form-input" />
+        </div>
 
         <button class="submit-btn" @onclick="SaveCourse" disabled="@isSubmitting">
             @(isSubmitting ? "Submitting..." : "Submit")
@@ -51,18 +56,72 @@
     private AddCourseDTO newCourse = new();
     private bool isSubmitting = false;
     private string? message;
+    private IBrowserFile? selectedFile;
 
+    private string ApiBaseUrl = "https://localhost:7194";
+    private class UploadResult
+    {
+        public string FileName { get; set; }
+    }
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        isSubmitting = true;
+        message = "Uploading file...";
+        selectedFile = e.File;
+
+        if (selectedFile != null)
+        {
+            try
+            {
+                using var content = new MultipartFormDataContent();
+                using var fileStream = selectedFile.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+
+                content.Add(new StreamContent(fileStream), "file", selectedFile.Name);
+
+                var response = await Http.PostAsync($"{ApiBaseUrl}/api/File/upload", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<UploadResult>();
+                    if (result != null)
+                    {
+                        newCourse.ImageUrl = result.FileName;
+                        message = "File uploaded successfully: " + result.FileName;
+                    }
+                }
+                else
+                {
+                    message = $"Error: File upload failed. {response.ReasonPhrase}";
+                }
+            }
+            catch (Exception ex)
+            {
+                message = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                isSubmitting = false;
+            }
+        }
+    }
     private async Task SaveCourse()
     {
         isSubmitting = true;
         message = string.Empty;
         try
         {
-            var response = await Http.PostAsJsonAsync("https://localhost:7194/api/courses", newCourse);
+            if (string.IsNullOrEmpty(newCourse.ImageUrl) && selectedFile != null)
+            {
+                message = "Error: Please wait for file to finish uploading or re-select file.";
+                isSubmitting = false;
+                return;
+            }
+            var response = await Http.PostAsJsonAsync($"{ApiBaseUrl}/api/courses", newCourse);
             if (response.IsSuccessStatusCode)
             {
                 message = "Course successfully added!";
                 newCourse = new AddCourseDTO();
+                selectedFile = null;
                 Nav.NavigateTo("/");
             }
             else

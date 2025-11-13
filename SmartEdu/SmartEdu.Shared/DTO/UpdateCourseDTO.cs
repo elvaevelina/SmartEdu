@@ -12,6 +12,7 @@ namespace SmartEdu.Shared.DTO
         public string Title { get; set; }
         public string Description { get; set; }
         public int DurationInHours { get; set; }
+        public string? ImageUrl { get; set; }
         public int TrainerId { get; set; }
     }
 }
