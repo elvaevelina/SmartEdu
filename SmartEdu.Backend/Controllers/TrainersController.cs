@@ -38,7 +38,8 @@ namespace SmartEdu.Backend.Controllers
             {
                 Name = dto.Name,
                 Email = dto.Email,
-                Phone = dto.Phone
+                Phone = dto.Phone,
+                ImageUrl = dto.ImageUrl
             };
             
             var createdTrainer = await _trainer.AddTrainer(newTrainer);
@@ -56,6 +57,7 @@ namespace SmartEdu.Backend.Controllers
             trainer.Name = dto.Name;
             trainer.Email = dto.Email;
             trainer.Phone = dto.Phone;
+            trainer.ImageUrl = dto.ImageUrl;
 
             await _trainer.UpdateTrainer(trainer);
             return NoContent();

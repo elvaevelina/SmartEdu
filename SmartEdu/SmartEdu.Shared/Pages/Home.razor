@@ -104,6 +104,21 @@
                         <h3>@trainer.Name</h3>
                         <p>@trainer.Email</p>
                         <p class="trainer-phone">@trainer.Phone</p>
+                        <div class="trainer-image-container">
+                            @if (!string.IsNullOrEmpty(trainer.ImageUrl))
+                            {
+                                <img src="@($"https://localhost:7194/Uploads/{trainer.ImageUrl}")"
+                                     alt="@trainer.Name"
+                                     class="trainer-image"
+                                     @onerror="e => { trainer.ImageUrl = null; }" />
+                            }
+                            else
+                            {
+                                <div class="no-image-placeholder">
+                                    <span>No Image</span>
+                                </div>
+                            }
+                        </div>
                     </div>
                     <div class="trainer-action">
                         <button class="btn-edit" @onclick="() => UpdateTrainer(trainer.IdTrainer)">✏️ Edit</button>
