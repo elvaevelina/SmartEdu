@@ -19,6 +19,7 @@ namespace SmartEdu
 
             // Add device-specific services used by the SmartEdu.Shared project
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
+            builder.Services.AddSingleton<ICameraService, CameraService>();
 
             builder.Services.AddMauiBlazorWebView();
 
@@ -26,9 +27,20 @@ namespace SmartEdu
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
 #endif
+            string baseUrl;
+
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                baseUrl = "http://10.0.2.2:5013/";
+            }
+            else
+            {
+                baseUrl = "https://localhost:7194/";
+            }
+
             builder.Services.AddScoped(sp => new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7194/")
+                BaseAddress = new Uri(baseUrl)
             });
             return builder.Build();
         }

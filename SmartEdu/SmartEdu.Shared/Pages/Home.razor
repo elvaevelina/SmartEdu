@@ -3,6 +3,7 @@
 @using SmartEdu.Shared.Models
 @inject NavigationManager Nav
 @inject IJSRuntime JSRuntime
+@inject HttpClient Http
 
 
 <div class="hero-section">
@@ -13,6 +14,12 @@
 <div class="search-bar">
     <input type="text" @bind="SearchQuery" @bind:event="oninput" placeholder="Search courses or trainers..." />
     <span class="search-icon" @onclick="SearchAsync">🔍</span>
+</div>
+
+<div style="text-align: center; margin: 10px 0;">
+    <button class="btn btn-outline-primary" @onclick="GoToCameraPage" style="border-radius: 20px; padding: 10px 20px;">
+        📷 Buka Fitur Kamera
+    </button>
 </div>
 
 <!-- COURSES  -->
@@ -52,7 +59,7 @@
                         <div class="course-image-container">
                             @if (!string.IsNullOrEmpty(course.ImageUrl))
                             {
-                                <img src="@($"https://localhost:7194/Uploads/{course.ImageUrl}")"
+                                <img src="@($"{Http.BaseAddress}Uploads/{course.ImageUrl}")"
                                      alt="@course.Title"
                                      class="course-image"
                                      @onerror="e => { course.ImageUrl = null; }" />
@@ -107,7 +114,7 @@
                         <div class="trainer-image-container">
                             @if (!string.IsNullOrEmpty(trainer.ImageUrl))
                             {
-                                <img src="@($"https://localhost:7194/Uploads/{trainer.ImageUrl}")"
+                                <img src="@($"{Http.BaseAddress}Uploads/{trainer.ImageUrl}")"
                                      alt="@trainer.Name"
                                      class="trainer-image"
                                      @onerror="e => { trainer.ImageUrl = null; }" />
@@ -145,9 +152,9 @@
     {
         try
         {
-            using var http = new HttpClient { BaseAddress = new Uri("https://localhost:7194/") };
-            Courses = await http.GetFromJsonAsync<List<Course>>("api/courses");
-            Trainers = await http.GetFromJsonAsync<List<Trainer>>("api/trainers");
+            // using var http = new HttpClient { BaseAddress = new Uri("https:localhost:7194/") };
+            Courses = await Http.GetFromJsonAsync<List<Course>>("api/courses");
+            Trainers = await Http.GetFromJsonAsync<List<Trainer>>("api/trainers");
         }
         catch (Exception ex)
         {
@@ -160,18 +167,18 @@
     {
         try
         {
-            using var http = new HttpClient { BaseAddress = new Uri("https://localhost:7194/") };
+            // using var http = new HttpClient { BaseAddress = new Uri("https:localhost:7194/") };
             if(string.IsNullOrWhiteSpace(SearchQuery))
             {
-                Courses = await http.GetFromJsonAsync<List<Course>>("api/courses");
-                Trainers = await http.GetFromJsonAsync<List<Trainer>>("api/trainers");
+                Courses = await Http.GetFromJsonAsync<List<Course>>("api/courses");
+                Trainers = await Http.GetFromJsonAsync<List<Trainer>>("api/trainers");
             }
 
             else
             {
                 var query = System.Web.HttpUtility.UrlEncode(SearchQuery);
 
-                var response = await http.GetFromJsonAsync<SearchResult>($"api/search?query={query}");
+                var response = await Http.GetFromJsonAsync<SearchResult>($"api/search?query={query}");
 
                 if (response != null)
                 {
@@ -203,8 +210,8 @@
         {
             try
             {
-                using var http = new HttpClient { BaseAddress = new Uri("https://localhost:7194/") };
-                var response = await http.DeleteAsync($"api/courses/{courseId}");
+                // using var http = new HttpClient { BaseAddress = new Uri("https:localhost:7194/") };
+                var response = await Http.DeleteAsync($"api/courses/{courseId}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -233,8 +240,8 @@
         {
             try
             {
-                using var http = new HttpClient { BaseAddress = new Uri("https://localhost:7194/") };
-                var response = await http.DeleteAsync($"api/trainers/{trainerId}");
+                // using var http = new HttpClient { BaseAddress = new Uri("https:localhost:7194/") };
+                var response = await Http.DeleteAsync($"api/trainers/{trainerId}");
                 if (response.IsSuccessStatusCode)
                 {
                     Trainers?.RemoveAll(t => t.IdTrainer == trainerId);
@@ -254,5 +261,10 @@
     private void NavigateToDetail(int trainerId)
     {
         Nav.NavigateTo($"/trainerdetail/{trainerId}");
+    }
+
+    private void GoToCameraPage()
+    {
+        Nav.NavigateTo("/camera");
     }
 }

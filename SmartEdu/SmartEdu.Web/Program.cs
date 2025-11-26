@@ -2,6 +2,8 @@ using SmartEdu.Shared.Services;
 using SmartEdu.Web.Components;
 using SmartEdu.Web.Services;
 using Microsoft.AspNetCore.Components;
+using SmartEdu.Web.Client.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 // Add device-specific services used by the SmartEdu.Shared project
-builder.Services.AddSingleton<IFormFactor, FormFactor>();
+builder.Services.AddSingleton<IFormFactor, SmartEdu.Web.Services.FormFactor>();
+
+builder.Services.AddScoped<ICameraService, CameraService>();
 
 builder.Services.AddScoped<HttpClient>(sp =>
 {
@@ -19,7 +23,6 @@ builder.Services.AddScoped<HttpClient>(sp =>
     //return new HttpClient { BaseAddress = new Uri(nav.BaseUri) };
     return new HttpClient { BaseAddress = new Uri("https://localhost:7194/") };
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
