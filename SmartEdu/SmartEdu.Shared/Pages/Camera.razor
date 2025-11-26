@@ -4,57 +4,103 @@
 @inject NavigationManager Nav
 
 <div class="container" style="text-align:center; margin-top:20px;">
-    <h3 style="color: #00334E;">Fitur Kamera</h3>
+    <h3 style="color: #00334E;">Kamera Sistem</h3>
     <p>Ambil foto dokumentasi atau bukti kegiatan.</p>
 
-    <div class="image-preview" style="margin: 20px auto; width: 100%; max-width: 400px; min-height: 200px; background-color: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc;">
-        @if (!string.IsNullOrEmpty(capturedImagePath))
+    <div class="image-preview" style="margin: 20px auto; width: 100%; max-width: 400px; min-height: 200px; background-color: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc; overflow:hidden;">
+        @if (!string.IsNullOrEmpty(capturedImageSrc))
         {
-            <img src="@capturedImagePath" style="width: 100%; height: auto; border-radius: 10px;" />
+            <img src="@capturedImageSrc" style="width: 100%; height: auto; border-radius: 10px;" />
         }
         else
         {
-            <span style="color: #999;">The photo results will appear here</span>
+            <span style="color: #999;">Hasil foto akan muncul di sini</span>
         }
     </div>
 
-    <div class="action-buttons" style="display: flex; gap: 10px; justify-content: center;">
+    <div class="action-buttons" style="display: flex; gap: 10px; justify-content: center; flex-wrap:wrap;">
         <button class="btn btn-primary btn-lg" @onclick="TakePhoto">
-            📸 Take a Picture
+            📸 Ambil Foto
         </button>
 
         <button class="btn btn-secondary btn-lg" @onclick="PickPhoto">
-            🖼️ Get From Gallery
+            🖼️ Galeri
         </button>
     </div>
 
-    <br />
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p style="color:red; margin-top:10px;">@errorMessage</p>
+    }
 
-    <button class="btn btn-link" @onclick="BackToHome">
-        ← Back to Home
-    </button>
+    <br />
+    <button class="btn btn-link" @onclick="BackToHome">← Kembali ke Home</button>
 </div>
 
 @code {
-    private string? capturedImagePath;
+    // Variabel untuk menampung source gambar yang bisa dibaca HTML (Base64)
+    private string? capturedImageSrc;
+    private string? errorMessage;
 
-    // Fungsi membuka kamera
     private async Task TakePhoto()
     {
-        var result = await CameraService.TakePhotoAsync();
-        if (result != null)
+        errorMessage = null;
+        try
         {
-            capturedImagePath = result; // Tampilkan gambar
+            // 1. Service mengembalikan Path File (di HP) atau Base64 (di Web)
+            var resultPath = await CameraService.TakePhotoAsync();
+
+            if (resultPath != null)
+            {
+                // 2. Proses agar bisa tampil di layar
+                await DisplayImage(resultPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Gagal mengambil foto: {ex.Message}";
         }
     }
 
-    // Fungsi membuka galeri
     private async Task PickPhoto()
     {
-        var result = await CameraService.PickPhotoAsync();
-        if (result != null)
+        errorMessage = null;
+        try
         {
-            capturedImagePath = result; // Tampilkan gambar
+            var resultPath = await CameraService.PickPhotoAsync();
+            if (resultPath != null)
+            {
+                await DisplayImage(resultPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Gagal mengambil dari galeri: {ex.Message}";
+        }
+    }
+
+    // --- FUNGSI KUNCI: Mengubah Path File menjadi Base64 agar bisa tampil ---
+    private async Task DisplayImage(string pathOrBase64)
+    {
+        // Cek apakah ini sudah format Base64 (biasanya dari Web Browser)
+        if (pathOrBase64.StartsWith("data:image"))
+        {
+            capturedImageSrc = pathOrBase64;
+        }
+        else
+        {
+            // Jika ini Path File Lokal (dari HP Android/iOS/Windows), kita baca filenya lalu ubah ke Base64
+            try
+            {
+                var imageBytes = await System.IO.File.ReadAllBytesAsync(pathOrBase64);
+                var base64String = Convert.ToBase64String(imageBytes);
+                capturedImageSrc = $"data:image/jpeg;base64,{base64String}";
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Gagal membaca file foto untuk preview.";
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 
