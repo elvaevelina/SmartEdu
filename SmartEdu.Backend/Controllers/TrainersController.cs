@@ -39,6 +39,7 @@ namespace SmartEdu.Backend.Controllers
                 Name = dto.Name,
                 Email = dto.Email,
                 Phone = dto.Phone,
+                Address = dto.Address,
                 ImageUrl = dto.ImageUrl
             };
             
@@ -57,6 +58,7 @@ namespace SmartEdu.Backend.Controllers
             trainer.Name = dto.Name;
             trainer.Email = dto.Email;
             trainer.Phone = dto.Phone;
+            trainer.Address = dto.Address;
             trainer.ImageUrl = dto.ImageUrl;
 
             await _trainer.UpdateTrainer(trainer);
