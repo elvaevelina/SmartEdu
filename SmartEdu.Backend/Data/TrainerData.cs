@@ -43,6 +43,7 @@ namespace SmartEdu.Backend.Data
             existingTrainer.Name = trainer.Name;
             existingTrainer.Email = trainer.Email;
             existingTrainer.Phone = trainer.Phone;
+            existingTrainer.Address = trainer.Address;
             await _context.SaveChangesAsync();
             return existingTrainer;
         }

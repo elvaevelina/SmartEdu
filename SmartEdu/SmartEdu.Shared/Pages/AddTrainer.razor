@@ -4,10 +4,12 @@
 @using SmartEdu.Shared.DTO
 @using SmartEdu.Shared.Services
 @using System.IO
+@using System.Net.Http.Headers
+
 @inject HttpClient Http
 @inject NavigationManager Nav
-@using System.Net.Http.Headers
 @inject ICameraService CameraService
+@inject ILocationService LocationService
 
 <div class="hero-section">
     <h1 class="system-title">SmartEdu</h1>
@@ -34,32 +36,50 @@
         </div>
 
         <div class="form-group">
-            <label>Trainer Image</label>
+            <label>Address</label>
 
-            <div class="course-image-container">
-                @if (!string.IsNullOrEmpty(newTrainer.ImageUrl))
-                {
-                    <img src="@($"{ApiBaseUrl}/Uploads/{newTrainer.ImageUrl}")"
-                         alt="Preview"
-                         class="preview-img"
-                         @onerror="@(e => { newTrainer.ImageUrl = null; })" />
-                }
-                else
-                {
-                    <span class="empty-image-text">No Image Selected</span>
-                }
-            </div>
+            <div class="input-icon-container">
+                <InputText class="form-input"
+                           placeholder="Enter address or click pin"
+                           @bind-Value="newTrainer.Address" />
 
-            <div class="upload-action-container">
-                <label class="btn-action-white">
-                    <span>Choose File</span>
-                    <InputFile OnChange="HandleFileSelected" style="display: none;" />
-                </label>
-
-                <button type="button" class="btn-action-white" @onclick="HandleCameraCapture">
-                    <span>Camera</span>
+                <button type="button" class="btn-inside-input" @onclick="GetCurrentLocation" title="Get Current Location">
+                    <i class="bi bi-geo-alt-fill"></i> 📍get location
                 </button>
             </div>
+
+            @if (!string.IsNullOrEmpty(locationStatus))
+            {
+                <small style="color: #ffc107; margin-top: 5px; font-style: italic;">@locationStatus</small>
+            }
+        </div>
+
+        <div class="form-group">
+            <label>Trainer Image</label>
+                <div class="course-image-container">
+                    @if (!string.IsNullOrEmpty(newTrainer.ImageUrl))
+                    {
+                        <img src="@($"{ApiBaseUrl}/Uploads/{newTrainer.ImageUrl}")"
+                             alt="Preview" class="preview-img"
+                             @onerror="@(e => { newTrainer.ImageUrl = null; })" />
+                    }
+                    else
+                    {
+                        <span class="empty-image-text">No Image Selected</span>
+                    }
+                </div>
+
+                <div class="action-grid">
+                    <label class="btn-action-white">
+                        <i class="bi bi-folder2-open" style="margin-right: 8px;"></i>Choose File
+                        <InputFile OnChange="HandleFileSelected" style="display: none;" />
+                    </label>
+
+                    <button type="button" class="btn-action-white" @onclick="HandleCameraCapture">
+                        <i class="bi bi-camera" style="margin-right: 8px;"></i>Camera
+                    </button>
+                </div>
+
 
             @if (isUploading)
             {
@@ -67,9 +87,16 @@
             }
         </div>
 
-        <button class="submit-btn" @onclick="SaveTrainer" disabled="@isSubmitting">
-            @(isSubmitting ? "Submitting..." : "Submit")
-        </button>
+        <div class="action-grid" style="margin-top: 20px;">
+            <button type="button" class="btn-form-action btn-secondary-custom" @onclick='() => Nav.NavigateTo("/")'>
+                Back
+            </button>
+
+            <button type="button" class="btn-form-action btn-primary-custom" @onclick="SaveTrainer" disabled="@isSubmitting">
+                @(isSubmitting ? "Processing..." : "Submit")
+            </button>
+        </div>
+
         @if (!string.IsNullOrEmpty(message))
         {
             <p class="form-message">@message</p>
@@ -83,6 +110,7 @@
     private bool isUploading = false;
     private string? message;
     private string uploadStatusMessage = "";
+    private string locationStatus = "";
     private IBrowserFile? selectedFile;
 
     private string ApiBaseUrl = "https://localhost:7194";
@@ -127,6 +155,30 @@
         finally
         {
             isSubmitting = false;
+        }
+    }
+
+    private async Task GetCurrentLocation()
+    {
+        try
+        {
+            locationStatus = "Getting location...";
+            // Panggil service yang kita buat
+            var address = await LocationService.GetCurrentAddressAsync();
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                newTrainer.Address = address;
+                locationStatus = "Location found!";
+            }
+            else
+            {
+                locationStatus = "Unable to get location/address.";
+            }
+        }
+        catch (Exception ex)
+        {
+            locationStatus = $"Error: {ex.Message}";
         }
     }
 
@@ -225,6 +277,7 @@
             {
                 message = "Course successfully added!";
                 newTrainer = new AddTrainerDTO();
+                locationStatus = "";
                 Nav.NavigateTo("/");
             }
             else
@@ -240,6 +293,11 @@
         {
             isSubmitting = false;
         }
+    }
+
+    private void GoBack()
+    {
+        Nav.NavigateTo("/");
     }
 }
 

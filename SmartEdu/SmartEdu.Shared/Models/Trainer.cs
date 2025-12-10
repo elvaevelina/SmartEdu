@@ -13,6 +13,7 @@ namespace SmartEdu.Shared.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public string? ImageUrl { get; set; }
+        public string? Address { get; set; }
         public List<Course> Courses { get; set; }
     }
 }

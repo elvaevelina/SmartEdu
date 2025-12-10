@@ -40,13 +40,11 @@
 
         <div class="form-group">
             <label>Course Image</label>
-
             <div class="course-image-container">
                 @if (!string.IsNullOrEmpty(newCourse.ImageUrl))
                 {
                     <img src="@($"{ApiBaseUrl}/Uploads/{newCourse.ImageUrl}")"
-                         alt="Preview"
-                         class="preview-img"
+                         alt="Preview" class="preview-img"
                          @onerror="@(e => { newCourse.ImageUrl = null; })" />
                 }
                 else
@@ -55,14 +53,14 @@
                 }
             </div>
 
-            <div class="upload-action-container">
+            <div class="action-grid">
                 <label class="btn-action-white">
-                    <span>Choose File</span>
+                    <i class="bi bi-folder2-open" style="margin-right: 8px;"></i>Choose File
                     <InputFile OnChange="HandleFileSelected" style="display: none;" />
                 </label>
 
                 <button type="button" class="btn-action-white" @onclick="HandleCameraCapture">
-                    <span>Camera</span>
+                    <i class="bi bi-camera" style="margin-right: 8px;"></i>Camera
                 </button>
             </div>
 
@@ -71,17 +69,22 @@
                 <p class="status-uploading">@uploadStatusMessage</p>
             }
         </div>
+        
+        <div class="action-grid" style="margin-top: 20px;">
+            <button type="button" class="btn-form-action btn-secondary-custom" @onclick='() => Nav.NavigateTo("/")'>
+                Back
+            </button>
 
-        <button class="submit-btn" @onclick="SaveCourse" disabled="@isSubmitting">
-            @(isSubmitting ? "Submitting..." : "Submit")
-        </button>
+            <button type="button" class="btn-form-action btn-primary-custom" @onclick="SaveCourse" disabled="@isSubmitting">
+                @(isSubmitting ? "Processing..." : "Submit")
+            </button>
+        </div>
 
         @if (!string.IsNullOrEmpty(message))
         {
             <p class="form-message">@message</p>
         }
     </EditForm>
-
 </div>
 
 
@@ -251,5 +254,10 @@
         {
             isSubmitting = false;
         }
+    }
+
+    private void GoBack()
+    {
+        Nav.NavigateTo("/");
     }
 }

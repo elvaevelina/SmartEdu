@@ -244,34 +244,93 @@ course-action {
 }
 
 /* Container agar tombol berdekatan */
-.upload-action-container {
-    display: flex;
-    justify-content: center; /* Posisi di tengah */
-    gap: 15px; /* Jarak antar tombol dekat */
-    align-items: center;
-    margin-bottom: 10px;
+/* === Container Tombol (Grid Layout) === */
+/* Gunakan ini untuk wadah tombol File/Camera DAN Back/Submit agar konsisten */
+.action-grid {
+    display: flex; /* Ubah dari Grid ke Flex agar lebih fleksibel */
+    gap: 15px; /* Jarak antar tombol */
+    justify-content: center; /* PENTING: Membuat tombol berkumpul di TENGAH */
+    width: 100%;
+    margin-top: 1px;
 }
 
-/* CLASS UTAMA: Membuat tombol putih & seragam */
+/* === Style Tombol Putih (File & Camera) === */
 .btn-action-white {
-    margin-top: 0px;
-    background-color: #00334E; /* Warna Putih */
-    color: #E8E8E8; /* Teks Biru Tua (Sesuai tema) */
+    min-width: 140px;
+    padding: 0 20px;
+    height: 38px; /* PERBAIKAN: Tinggi dikurangi (sebelumnya 50px) agar lebih ramping */
+    background-color: #ffffff;
+    color: #00334E !important;
+    border: none;
+    border-radius: 20px; /* PERBAIKAN: Radius ditambah agar lebih "rounded" (tidak kotak) */
+
+    font-size: 0.9rem; /* Ukuran font disesuaikan agar pas dengan tombol kecil */
+    font-weight: normal !important;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Shadow lebih halus */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    transition: all 0.2s ease;
+}
+
+    .btn-action-white:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-1px);
+    }
+
+.btn-form-action {
+    width: 200px;
+    height: 20px; /* Samakan tinggi dengan tombol atas */
     border: none;
     border-radius: 25px;
-    padding: 7px 25px; /* Ukuran padding sama */
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 2px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    text-decoration: none;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
 
+/* === Style Tombol Bawah (Back & Submit) === */
+.btn-secondary-custom {
+    background-color: #B6BBC4; /* Warna abu untuk Back */
+    color: #00334E;
+}
 
+.btn-primary-custom {
+    background-color: #00334E; /* Warna biru untuk Submit */
+    color: #ffffff;
+}
+
+/* Base class untuk tombol Back & Submit agar ukurannya SAMA dengan tombol atas */
+.btn-form-action {
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    width: 100%;
+    height: 45px; /* Sedikit lebih besar untuk tombol utama */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-form-action:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .btn-form-action:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 /* Status Uploading */
 .status-uploading {
     color: #ffc107;
@@ -389,6 +448,36 @@ course-action {
     position: relative; 
 }
 
+/* Container untuk mensejajarkan tombol */
+.form-action-group {
+    display: flex;
+    gap: 15px; /* Jarak antar tombol */
+    margin-top: 20px;
+}
+
+/* Style untuk tombol Cancel/Back */
+.btn-cancel {
+    background-color: #6c757d; /* Warna abu-abu */
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1; /* Agar lebar tombol seimbang dengan submit */
+}
+
+    .btn-cancel:hover {
+        background-color: #5a6268;
+    }
+
+/* Pastikan submit-btn juga punya flex: 1 agar ukurannya sama */
+.submit-btn {
+    flex: 1;
+}
+
 
 /* === trainer Image Styles === */
 .trainer-image-container {
@@ -431,8 +520,8 @@ course-action {
 
 /* === Add Course & Trainer Form === */
 .form-card {
-    max-width: 1200px;
-    margin: 60px auto;
+    max-width: 700px;
+    margin: 40px auto;
     background: #5588A3;
     border-radius: 20px;
     padding: 40px 50px;
@@ -481,6 +570,44 @@ course-action {
     cursor: pointer;
     margin-top: 10px;
 }
+
+/* === Input dengan Tombol di Dalam (Address/Location) === */
+.input-icon-container {
+    position: relative; /* Wajib agar tombol bisa 'mengapung' di dalam */
+    width: 100%;
+}
+
+    /* Pastikan input text punya ruang kosong di kanan agar teks tidak menabrak ikon */
+    .input-icon-container .form-input,
+    .input-icon-container .form-control {
+        padding-right: 130px !important;
+        width: 100%;
+        box-sizing: border-box; /* Agar padding tidak merusak lebar */
+    }
+
+/* Tombol ikon Pin Lokasi yang mengapung */
+.btn-inside-input {
+    position: absolute;
+    right: 15px; /* Jarak dari sisi kanan */
+    top: 50%; /* Posisi vertikal tengah */
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #5588A3;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+    .btn-inside-input:hover {
+        transform: translateY(-50%) scale(1.1); /* Efek membesar saat hover */
+    }
 
 /* === Update Course Form === */
 .update-card {
