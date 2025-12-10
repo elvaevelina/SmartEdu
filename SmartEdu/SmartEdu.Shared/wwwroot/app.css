@@ -51,6 +51,71 @@
         z-index: 2;
     }
 
+
+.home-card {
+    background-color: #E8E8E8; /* Warna #4 */
+    border: 2px solid #145374; /* Warna #2 (Ganti dari 5588A3 agar lebih tegas) */
+    border-radius: 20px;
+    padding: 30px;
+    width: 250px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 51, 78, 0.15); /* Shadow pakai nuansa Navy */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .home-card h3 {
+        color: #00334E; /* Warna #1 */
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .home-card p {
+        color: #145374; /* Warna #2 (Ganti dari #666) */
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .home-card:hover {
+        background-color: #145374; /* Warna #2 */
+        color: #E8E8E8; /* Warna #4 */
+        border-color: #00334E; /* Warna #1 */
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 51, 78, 0.3);
+    }
+
+        /* Pastikan teks berubah warna saat hover */
+        .home-card:hover h3,
+        .home-card:hover p {
+            color: #E8E8E8; /* Warna #4 */
+        }
+
+.home-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px #5588A3; /* Warna #3 */
+}
+
+/* Style khusus untuk tombol kamera di Home agar konsisten */
+.btn-home-camera {
+    border-radius: 20px;
+    padding: 10px 20px;
+    border: 2px solid #145374;
+    background-color: transparent;
+    color: #145374;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .btn-home-camera:hover {
+        background-color: #145374;
+        color: #E8E8E8;
+    }
+
 /* === Search Bar (A) === */
 .search-bar {
     position: relative;
@@ -793,6 +858,83 @@ course-action {
     cursor: pointer;
     transition: background 0.2s ease;
 }
+
+/*main layout Check Network Connection
+*/
+
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+main {
+    flex: 1;
+    background-color: #E8E8E8; /* Warna #4 Palette Anda */
+    overflow-y: auto; /* Agar bisa discroll */
+}
+
+/* Header Atas */
+.top-row {
+    background-color: #00334E; /* Warna #1 Palette Anda */
+    border-bottom: 2px solid #5588A3; /* Warna #3 */
+    justify-content: flex-start; /* Isi rata kiri */
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    color: #E8E8E8;
+    position: sticky;
+    top: 0;
+    z-index: 100; /* Agar tetap di atas saat discroll */
+}
+
+    .top-row ::deep a, .top-row ::deep .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+        color: #E8E8E8;
+    }
+
+/* Styling Indikator Network */
+.network-indicator {
+    font-weight: bold;
+    font-size: 1rem;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.status-online {
+    color: #00ff00; /* Hijau terang agar kontras dengan background gelap */
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.status-offline {
+    color: #ff4d4d; /* Merah terang */
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
 
 
 

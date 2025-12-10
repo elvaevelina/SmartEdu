@@ -17,3 +17,28 @@
         padding-left: env(safe-area-inset-left);
     }
 }
+
+
+/* === Offline Alert === */
+.offline-alert {
+    background-color: #e63946; /* Merah */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}

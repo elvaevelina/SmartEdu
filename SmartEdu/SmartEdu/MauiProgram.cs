@@ -21,6 +21,7 @@ namespace SmartEdu
             // Add device-specific services used by the SmartEdu.Shared project
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
             builder.Services.AddSingleton<ICameraService, CameraService>();
+            builder.Services.AddSingleton<INetworkService, MauiNetworkService>();
 
             builder.Services.AddSingleton<ILocationService, MauiLocationService>();
             builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);

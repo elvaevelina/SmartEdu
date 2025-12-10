@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using SmartEdu.Shared.Services
+@inject INetworkService NetworkService
+@implements IDisposable
 
 
 <HeadContent>
@@ -6,8 +9,27 @@
 </HeadContent>
 
 
-<div class ="content">
-    @Body
+<div class="page">
+    <main>
+        <div class="top-row px-4">
+
+            <div class="network-indicator">
+                @if (isConnected)
+                {
+                    <span class="status-online">🟢 Online</span>
+                }
+                else
+                {
+                    <span class="status-offline">🔴 No Internet Connection</span>
+                }
+            </div>
+
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
 </div>
 
 
@@ -32,3 +54,29 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div> *@
+
+
+@code {
+    private bool isConnected = true;
+
+    protected override void OnInitialized()
+    {
+        // Cek status awal
+        isConnected = NetworkService.IsConnected;
+        // Langganan event jika status berubah
+        NetworkService.ConnectivityChanged += HandleConnectivityChanged;
+    }
+
+    private void HandleConnectivityChanged(bool status)
+    {
+        isConnected = status;
+        // Refresh UI karena event ini dipanggil dari background thread sistem
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        // Wajib lepas event handler saat halaman ditutup
+        NetworkService.ConnectivityChanged -= HandleConnectivityChanged;
+    }
+}

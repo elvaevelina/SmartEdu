@@ -11,5 +11,6 @@ builder.Services.AddSingleton<IFormFactor, FormFactor>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7194/") });
 
 builder.Services.AddScoped<ILocationService, WebLocationService>();
+builder.Services.AddSingleton<INetworkService, WebNetworkService>();
 
 await builder.Build().RunAsync();
