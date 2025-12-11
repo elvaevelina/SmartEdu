@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager Nav
+@using System.Reflection;
 
 <div class="hero-section">
     <h1 class="system-title">SmartEdu</h1>
@@ -23,12 +24,26 @@
             <h3>View Trainers</h3>
             <p>See our professional trainers list</p>
         </div>
+    </div>
 
+    <div style="margin-top: 60px; color: #B6BBC4; font-size: 0.9rem;">
+        <p>App Version: <strong>@appVersion</strong></p>
+        <p style="font-size: 0.8rem;">© 2025 SmartEdu System</p>
     </div>
 
 </div>
 
 @code {
+    private string appVersion = "1.0.0";
+    protected override void OnInitialized()
+    {
+        var version = Assembly.GetExecutingAssembly().GetName().Version;
+        if (version != null)
+        {
+            appVersion = $"v{version.Major}.{version.Minor}.{version.Build}";
+        }
+    }
+
     private void GoToCourses()
     {
         Nav.NavigateTo("/courses");

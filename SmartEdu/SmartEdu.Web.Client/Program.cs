@@ -12,5 +12,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 builder.Services.AddScoped<ILocationService, WebLocationService>();
 builder.Services.AddSingleton<INetworkService, WebNetworkService>();
+builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 
 await builder.Build().RunAsync();

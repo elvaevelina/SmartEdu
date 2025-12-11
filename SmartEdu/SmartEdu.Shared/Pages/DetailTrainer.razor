@@ -3,6 +3,8 @@
 @using SmartEdu.Shared.Models
 @inject NavigationManager Nav
 @inject HttpClient Http
+@using SmartEdu.Shared.Services
+@inject ITextToSpeechService TextToSpeech
 
 <div class="hero-section">
     <h1 class="system-title">SmartEdu</h1>
@@ -20,10 +22,25 @@ else
         <div class="trainer-card-detail">
             <div class="trainer-avatar-detail">👨‍🏫</div>
             <div class="trainer-info-detail">
-                <h3>@Trainer.Name</h3>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h3 style="margin:0;">@Trainer.Name</h3>
+                    <button @onclick="ReadDescription" class="btn-sound" title="Baca Deskripsi">
+                        🔊
+                    </button>
+                </div>
                 <p><strong>ID:</strong> @Trainer.IdTrainer</p>
-                <p><strong>Email:</strong> @Trainer.Email</p>
-                <p><strong>Phone:</strong> @Trainer.Phone</p>
+                <p>
+                    <strong>Email:</strong>
+                    <a href="mailto:@Trainer.Email" style="text-decoration: none; color: #007bff; font-weight: bold;">
+                        @Trainer.Email
+                    </a>
+                </p>                <p>
+                    <strong>Phone:</strong>
+                    <a href="tel:@Trainer.Phone" style="text-decoration: none; color: #007bff; font-weight: bold;">
+                        @Trainer.Phone
+                    </a>
+                </p>                
                 <p><strong>Address:</strong> @Trainer.Address</p>
             </div>
         </div>
@@ -73,8 +90,24 @@ else
         }
     }
 
+    private async Task ReadDescription()
+    {
+        if (Trainer != null)
+        {
+            // Teks yang akan dibaca: Nama + Alamat (atau deskripsi lain jika ada)
+            string textToRead = $"Trainer name is {Trainer.Name}. Contact number {Trainer.Phone}. Address at {Trainer.Address}.";
+
+            await TextToSpeech.SpeakAsync(textToRead);
+        }
+    }
+
+    public void Dispose()
+    {
+        TextToSpeech.CancelAsync();
+    }
+
     private void GoBack()
     {
-        Nav.NavigateTo("/");
+        Nav.NavigateTo("/trainers");
     }
 }

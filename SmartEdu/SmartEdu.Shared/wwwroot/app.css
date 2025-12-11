@@ -859,6 +859,26 @@ course-action {
     transition: background 0.2s ease;
 }
 
+.btn-sound {
+    background-color: #eef2ff;
+    border: 1px solid #145374;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 3px; /* Penyesuaian ikon */
+}
+
+    .btn-sound:hover {
+        background-color: #145374;
+        transform: scale(1.1);
+    }
+
 /*main layout Check Network Connection
 */
 
@@ -932,7 +952,7 @@ main {
 }
 
 .content {
-    padding-top: 1.1rem;
+    padding-top: 0rem;
 }
 
 
