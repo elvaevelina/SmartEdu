@@ -2,6 +2,8 @@
 @using SmartEdu.Shared.Services
 @inject INetworkService NetworkService
 @implements IDisposable
+@inject IBatteryService BatteryService
+@inject IScreenshotService ScreenshotService
 
 
 <HeadContent>
@@ -24,6 +26,18 @@
                 }
             </div>
 
+            <div class="battery-container" title="@batteryState">
+
+                <span class="battery-text" style="color: @batteryColor;">
+                    @batteryPercentage%
+                </span>
+
+                <span class="battery-icon">@batteryIcon</span>
+            </div>
+
+            <button class="btn-screenshot" @onclick="TakeScreenshot" title="Capture Screen">
+                📸
+            </button>
         </div>
 
         <article class="content">
@@ -59,12 +73,18 @@
 @code {
     private bool isConnected = true;
 
+    private string batteryPercentage = "0";
+    private string batteryState = "Unknown";
+    private string batteryIcon = "🔋";
+    private string batteryColor = "#E8E8E8"; 
+
     protected override void OnInitialized()
     {
         // Cek status awal
         isConnected = NetworkService.IsConnected;
         // Langganan event jika status berubah
         NetworkService.ConnectivityChanged += HandleConnectivityChanged;
+        CheckBattery();
     }
 
     private void HandleConnectivityChanged(bool status)
@@ -78,5 +98,51 @@
     {
         // Wajib lepas event handler saat halaman ditutup
         NetworkService.ConnectivityChanged -= HandleConnectivityChanged;
+    }
+    private void CheckBattery()
+    {
+        try
+        {
+            var level = BatteryService.GetLevel(); // Dapat angka 0.0 - 1.0
+            var state = BatteryService.GetState();
+
+            // Konversi ke Persen
+            int percent = (int)(level * 100);
+            batteryPercentage = percent.ToString();
+            batteryState = state;
+
+            // Logika Warna & Ikon
+            if (percent > 80)
+            {
+                batteryColor = "#4CAF50"; // Hijau
+                batteryIcon = "🔋";
+            }
+            else if (percent > 20)
+            {
+                batteryColor = "#FFC107"; // Kuning
+                batteryIcon = "🪫";
+            }
+            else
+            {
+                batteryColor = "#FF5252"; // Merah
+                batteryIcon = "🪫";
+            }
+
+            // Cek jika sedang di-charge
+            if (state == "Charging" || state == "Full")
+            {
+                batteryIcon = "⚡ " + batteryIcon;
+                batteryColor = "#00E676"; // Hijau Terang Charging
+            }
+        }
+        catch
+        {
+            batteryPercentage = "--";
+        }
+    }
+    private async Task TakeScreenshot()
+    {
+        // Panggil fungsi screenshot
+        await ScreenshotService.CaptureandShareAsync();
     }
 }

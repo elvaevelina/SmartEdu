@@ -42,3 +42,51 @@
         transform: translateY(0);
     }
 }
+
+/* Container Baterai */
+.battery-container {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: help; /* Opsional: Mengubah kursor jadi tanda tanya saat di-hover */
+}
+
+/* Teks Persentase */
+.battery-text {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* Ikon Baterai */
+.battery-icon {
+    font-size: 1.2rem;
+    /* Sedikit penyesuaian posisi vertikal jika perlu */
+    position: relative;
+    top: 1px;
+}
+.btn-screenshot {
+    background-color: transparent;
+    border: 1px solid #B6BBC4;
+    color: #E8E8E8;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px; /* Jarak dari Baterai */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+}
+
+    .btn-screenshot:hover {
+        background-color: #E8E8E8;
+        color: #00334E; /* Warna ikon berubah jadi biru gelap saat hover */
+        transform: scale(1.1);
+    }
+
+    .btn-screenshot:active {
+        transform: scale(0.95);
+    }

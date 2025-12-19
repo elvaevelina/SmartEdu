@@ -23,6 +23,8 @@ namespace SmartEdu
             builder.Services.AddSingleton<ICameraService, CameraService>();
             builder.Services.AddSingleton<INetworkService, MauiNetworkService>();
             builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
+            builder.Services.AddSingleton<IBatteryService, MauiBatteryService>();
+            builder.Services.AddSingleton<IScreenshotService, MauiScreenshotService>();
 
             builder.Services.AddSingleton<ILocationService, MauiLocationService>();
             builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SmartEdu.Shared.Services;
-using SmartEdu.Web.Client.Services;
-
+using SmartEdu.Web.Client.Services; 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -13,5 +12,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<ILocationService, WebLocationService>();
 builder.Services.AddSingleton<INetworkService, WebNetworkService>();
 builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
+builder.Services.AddSingleton<IBatteryService, WebBatteryService>();
+builder.Services.AddSingleton<IScreenshotService, WebScreenshotService>();
 
 await builder.Build().RunAsync();
