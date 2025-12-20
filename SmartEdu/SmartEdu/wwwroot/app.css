@@ -90,3 +90,155 @@
     .btn-screenshot:active {
         transform: scale(0.95);
     }
+
+
+/* =========================================
+   Layout, Battery, Login
+   ========================================= */
+
+/* === 1. Status Bar Safe Area (iOS Notch) === */
+.status-bar-safe-area {
+    display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+    .status-bar-safe-area {
+        display: flex;
+        position: sticky;
+        top: 0;
+        height: env(safe-area-inset-top);
+        background-color: #f7f7f7;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .flex-column, .navbar-brand {
+        padding-left: env(safe-area-inset-left);
+    }
+}
+
+/* === 2. Offline Alert Animation === */
+.offline-alert {
+    background-color: #e63946; /* Merah */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* === 3. Battery Indicator Styles === */
+.battery-container {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: help;
+}
+
+.battery-text {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.battery-icon {
+    font-size: 1.2rem;
+    position: relative;
+    top: 1px;
+}
+
+/* === 4. Screenshot Button Styles === */
+.btn-screenshot, .btn-logout-top {
+    background-color: transparent; /* Latar belakang transparan */
+    border: none; /* HAPUS BINGKAI (Lingkaran/Kotak) */
+    box-shadow: none; /* Hapus bayangan jika ada */
+    width: 40px; /* Ukuran area sentuh */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* Jarak antar ikon */
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+    font-size: 1.4rem; /* Ukuran ikon diperbesar sedikit agar jelas */
+}
+
+    .btn-screenshot:hover {
+        background-color: #E8E8E8;
+        color: #00334E; /* Warna ikon berubah jadi biru gelap */
+        transform: scale(1.1);
+    }
+
+    .btn-screenshot:active {
+        transform: scale(0.95);
+    }
+
+/* === 5. Login Page Styles === */
+.login-container {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    padding: 0 20px; /* Tambahan agar tidak mentok di layar HP kecil */
+}
+
+/* Override lebar form-card khusus untuk halaman login */
+.login-card {
+    width: 100%;
+    max-width: 400px !important;
+    padding: 40px 30px;
+}
+
+.login-error-msg {
+    color: #ff4d4d; /* Merah terang */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-left: 5px solid #ff4d4d;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-login {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Garis Pembatas Menu */
+.nav-separator {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 10px 20px;
+}
+
+/* Tombol Logout */
+.btn-logout {
+    cursor: pointer;
+    color: #ff6b6b; /* Merah kemerahan */
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-logout:hover {
+        color: #ff4d4d; /* Merah lebih terang saat di-hover */
+        background-color: rgba(255, 255, 255, 0.1); /* Efek highlight tipis */
+        border-radius: 4px;
+    }

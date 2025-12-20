@@ -12,6 +12,7 @@ namespace SmartEdu.Backend.Data
 
         public DbSet<Course> Courses { get; set; } = null!;
         public DbSet<Trainer> Trainers { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,4 +1,6 @@
 ﻿@page "/camera"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @using SmartEdu.Shared.Services
 @inject ICameraService CameraService
 @inject NavigationManager Nav

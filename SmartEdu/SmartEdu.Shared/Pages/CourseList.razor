@@ -1,4 +1,6 @@
 ﻿@page "/courses"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @using System.Net.Http.Json
 @using SmartEdu.Shared.Models
 @inject NavigationManager Nav
@@ -72,7 +74,7 @@
     }
 
     <div style="margin-top: 30px; text-align:center;">
-        <button class="btn-cancel" @onclick='() => Nav.NavigateTo("/")'>Back to Home</button>
+        <button class="btn-cancel" @onclick='() => Nav.NavigateTo("/home")'>Back to Home</button>
     </div>
 
 </div>

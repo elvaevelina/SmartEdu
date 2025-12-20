@@ -6,6 +6,30 @@ namespace SmartEdu.Backend.Data
     {
         public static void Initialize(SmartEduContext db)
         {
+            if (!db.Users.Any())
+            {
+                var users = new User[]
+                {
+                    new User
+                    {
+                        Username = "admin",
+                        Password = "123",
+                        Role = "Admin",
+                        FullName = "Super Administrator"
+                    },
+                    new User
+                    {
+                        Username = "user",
+                        Password = "123",
+                        Role = "User",
+                        FullName = "Mahasiswa SmartEdu"
+                    }
+               };
+
+                db.Users.AddRange(users);
+                db.SaveChanges(); // Simpan User
+            }
+
             if (db.Trainers.Any() || db.Courses.Any())
                 return;
 
@@ -74,6 +98,8 @@ namespace SmartEdu.Backend.Data
                     TrainerId = 1
                 }
             };
+
+
 
             db.Courses.AddRange(courses);
             db.SaveChanges();

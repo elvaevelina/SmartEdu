@@ -1,4 +1,6 @@
 ﻿@page "/updatecourse/{id:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @using System.Net.Http.Json
 @using SmartEdu.Shared.Models
 @using SmartEdu.Shared.DTO
@@ -239,7 +241,7 @@ else
             var response = await Http.PutAsJsonAsync($"api/Courses/{id}", course);
             if (response.IsSuccessStatusCode)
             {
-                Nav.NavigateTo("/");
+                Nav.NavigateTo("/courses");
             }
             else
             {

@@ -1,4 +1,6 @@
 ﻿@page "/addtrainer"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @using System.Net.Http.Json
 @using SmartEdu.Shared.Models
 @using SmartEdu.Shared.DTO
@@ -278,7 +280,7 @@
                 message = "Course successfully added!";
                 newTrainer = new AddTrainerDTO();
                 locationStatus = "";
-                Nav.NavigateTo("/");
+                Nav.NavigateTo("/trainers");
             }
             else
             {

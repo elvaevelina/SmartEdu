@@ -3,6 +3,8 @@ using SmartEdu.Services;
 using SmartEdu.Shared.Services;
 using System.Net.Http;
 using Microsoft.Maui.Devices.Sensors;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace SmartEdu
 {
@@ -19,6 +21,10 @@ namespace SmartEdu
                 });
 
             // Add device-specific services used by the SmartEdu.Shared project
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
             builder.Services.AddSingleton<ICameraService, CameraService>();
             builder.Services.AddSingleton<INetworkService, MauiNetworkService>();

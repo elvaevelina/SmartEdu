@@ -1,9 +1,12 @@
 ﻿@inherits LayoutComponentBase
 @using SmartEdu.Shared.Services
 @inject INetworkService NetworkService
+@using Microsoft.AspNetCore.Components.Authorization
 @implements IDisposable
 @inject IBatteryService BatteryService
 @inject IScreenshotService ScreenshotService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Nav
 
 
 <HeadContent>
@@ -38,6 +41,15 @@
             <button class="btn-screenshot" @onclick="TakeScreenshot" title="Capture Screen">
                 📸
             </button>
+
+            <AuthorizeView>
+                <Authorized>
+                    <button class="btn-logout-top" @onclick="HandleLogout" title="Log Out" style="width: auto; padding: 0 10px; font-size: 1rem;">
+                        Log Out
+                    </button>
+                </Authorized>
+            </AuthorizeView>
+
         </div>
 
         <article class="content">
@@ -144,5 +156,12 @@
     {
         // Panggil fungsi screenshot
         await ScreenshotService.CaptureandShareAsync();
+    }
+
+    private async Task HandleLogout()
+    {
+        var customAuthState = (CustomAuthStateProvider)AuthStateProvider;
+        await customAuthState.UpdateAuthenticationState(null);
+        Nav.NavigateTo("/", true);
     }
 }

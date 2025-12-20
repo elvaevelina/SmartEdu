@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿@page "/home"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]                    
 @inject NavigationManager Nav
 @using System.Reflection;
 

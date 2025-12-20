@@ -1,4 +1,6 @@
 ﻿@page "/addcourse"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @using System.Net.Http.Json
 @using SmartEdu.Shared.Models
 @using SmartEdu.Shared.DTO
@@ -239,7 +241,7 @@
                 message = "Course successfully added!";
                 newCourse = new AddCourseDTO();
                 selectedFile = null;
-                Nav.NavigateTo("/");
+                Nav.NavigateTo("/courses");
             }
             else
             {

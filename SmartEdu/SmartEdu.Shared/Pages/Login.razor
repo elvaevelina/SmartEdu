@@ -1,0 +1,72 @@
+﻿@page "/"
+@using SmartEdu.Shared.DTO
+@using SmartEdu.Shared.Services
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Nav
+
+<div class="login-container">
+    <div class="form-card login-card">
+        <h3 class="form-title">Login SmartEdu</h3>
+
+        <div class="form-group">
+            <label>Username</label>
+            <input @bind="loginModel.Username" class="form-control" placeholder="Enter username" />
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input @bind="loginModel.Password" type="password" class="form-control" placeholder="Enter password" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="login-error-msg">
+                @errorMessage
+            </div>
+        }
+
+        <button class="btn-primary btn-login" @onclick="HandleLogin">
+            Login 🔐
+        </button>
+    </div>
+</div>
+
+@code {
+    private LoginDTO loginModel = new LoginDTO();
+    private string errorMessage = "";
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/Auth/login", new { Username = loginModel.Username, Password = loginModel.Password });
+
+            if (response.IsSuccessStatusCode)
+            {
+                var userResult = await response.Content.ReadFromJsonAsync<UserSession>();
+
+                var session = new UserSession
+                {
+                    Username = loginModel.Username,
+                    Role = "Admin"
+                };
+
+                var customAuthState = (CustomAuthStateProvider)AuthStateProvider;
+                await customAuthState.UpdateAuthenticationState(session);
+
+                Nav.NavigateTo("/home");
+            }
+            else
+            {
+                errorMessage = "Username atau Password salah!";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Gagal login: " + ex.Message;
+        }
+    }
+}
